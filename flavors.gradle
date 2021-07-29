@@ -1,0 +1,45 @@
+android {
+    flavorDimensions 'env', 'audience'
+    def propsFile = file("../firebase.properties")
+    productFlavors {
+        dev {
+            dimension = 'audience'
+//            firebaseAppDistribution {
+//                if (propsFile.exists()) {
+//                    def props = new Properties()
+//                    props.load(new FileInputStream(propsFile))
+//                    serviceCredentialsFile = file(props['appDistributionFile'])
+//                    releaseNotesFile = file(props['releaseNotes'])
+//                    groups = "dev"
+//                }
+//            }
+        }
+
+        qa {
+            dimension = 'audience'
+        }
+
+        store {
+            dimension = 'audience'
+        }
+
+        stage {
+            dimension = 'env'
+            applicationId "com.mvvm.supplierapp.dev"
+            buildConfigField "String", "BASE_URL", "\"http://api.weatherstack.com/\""
+            //buildConfigField "String", "BASE_URL", "\"https://test-operator.ipllogisticstechnologies.com\""
+        }
+        preprod {
+            dimension = 'env'
+            applicationId "com.mvvm.supplierapp.qa"
+            buildConfigField "String", "BASE_URL", "\"http://api.weatherstack.com/\""
+        }
+        prod {
+            dimension = 'env'
+            applicationId "com.mvvm.supplierapp"
+            buildConfigField "String", "BASE_URL", "\"https://operator.ipllogisticstechnologies.com\""
+        }
+    }
+}
+
+

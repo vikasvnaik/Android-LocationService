@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_smallest">10sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">15sp</dimen>
+    <dimen name="text_size_medium_large">21sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_fourteen">14sp</dimen>
+    <dimen name="text_size_twenty_six">26sp</dimen>
+    <dimen name="text_size_eight">8sp</dimen>
+    <dimen name="text_size_twelve">12sp</dimen>
+    <dimen name="text_size_headline">25sp</dimen>
+    <dimen name="text_size_subhead">22sp</dimen>
+
+
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+    <dimen name="margin_thirty">30dp</dimen>
+    <dimen name="margin_forty">40dp</dimen>
+    <dimen name="margin_fifty">50dp</dimen>
+
+    <dimen name="upload_image_icon_size">100dp</dimen>
+    <dimen name="upload_address_image_width">120dp</dimen>
+    <dimen name="upload_address_image_height">80dp</dimen>
+    <dimen name="profile_image_size">85dp</dimen>
+
+    <dimen name="viewpager_next_item_visible">60dp</dimen>
+    <dimen name="viewpager_current_item_horizontal_margin">90dp</dimen>
+    <dimen name="pageMarginAndoffset">80dp</dimen>
+
+    <dimen name="image_width">74dp</dimen>
+    <dimen name="image_height">51dp</dimen>
+
+</resources>

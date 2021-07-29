@@ -1,0 +1,25 @@
+android {
+    buildTypes {
+        debug {
+            debuggable true
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+
+        release {
+            lintOptions {
+                checkReleaseBuilds false
+                abortOnError false
+            }
+            debuggable false
+            shrinkResources false
+            zipAlignEnabled true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+
+}
+
+

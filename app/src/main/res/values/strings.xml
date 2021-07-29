@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Mvvm</string>
+    <string name="label_ok">Ok</string>
+    <string name="error_message">Something went wrong at our end!</string>
+    <string name="retry">Retry</string>
+</resources>

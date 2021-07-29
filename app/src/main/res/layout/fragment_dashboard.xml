@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.dashboard.DashboardActivity">
+
+    <RelativeLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/loadingLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+            <ImageView
+                android:id="@+id/loading"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:interpolator="@anim/rotate"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_loading"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/errorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E85959"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/error"
+                style="@style/Widget.TextView.Medium.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/error_message"
+                android:layout_centerInParent="true"
+                android:textColor="@color/colorWhite"
+                android:layout_margin="48dp"
+                android:fontFamily="sans-serif-thin"
+                />
+            <Button
+                android:id="@+id/retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/error"
+                android:layout_marginTop="44dp"
+                android:textColor="@color/colorWhite"
+                android:text="@string/retry"
+                android:textAllCaps="true"
+                android:background="#4A4A4A"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/currentWeather"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/refresh"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_margin="8dp"
+                android:visibility="gone"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_loading" />
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="56dp"
+                android:layout_marginLeft="26dp"
+                android:background="@mipmap/ic_launcher"
+                android:layout_toRightOf="@+id/city"/>
+            <TextView
+                android:id="@+id/temperature"
+                style="@style/Widget.TextView.Medium.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="56dp"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/tempText" />
+
+            <TextView
+                android:id="@+id/city"
+                style="@style/Widget.TextView.Medium.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/temperature"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/cityText"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    <!-- Adding bottom sheet after main content -->
+   <!-- <include layout="@layout/bottom_sheet" />-->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

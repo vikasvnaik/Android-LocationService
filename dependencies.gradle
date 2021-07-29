@@ -1,0 +1,95 @@
+dependencies {
+    /*** Testing ***/
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    /*** Kotlin Language ***/
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+
+    /*** Android Native ***/
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    //implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha06'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.fragment:fragment:1.3.0-beta01'
+    implementation 'androidx.fragment:fragment-ktx:1.3.0-beta01'
+    implementation 'androidx.startup:startup-runtime:1.0.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    // Fragment Navigation
+    implementation 'androidx.navigation:navigation-fragment:2.3.1'
+    implementation 'androidx.navigation:navigation-ui:2.3.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.1'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.1'
+
+    /*** lifecycle ***/
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+
+    /*** Coroutines ***/
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
+
+    /*** HTTP ***/
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.7.0'
+
+    /*** Image Loading ***/
+    implementation 'io.coil-kt:coil:0.11.0'
+    //implementation 'io.coil-kt:coil-gif:0.11.0'
+    implementation 'id.zelory:compressor:3.0.0'
+    //implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.21'
+    implementation 'com.airbnb.android:lottie:3.4.4'
+
+    /*** Parsing ***/
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC")
+
+    /***OTP View ***/
+    //implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.0.3'
+
+    /*** Permissions ***/
+    //implementation 'com.github.quickpermissions:quickpermissions-kotlin:0.4.0'
+
+    /*** Logging ***/
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    /*** Koin ***/
+    implementation 'org.koin:koin-androidx-viewmodel:2.1.5'
+
+    /*** PageIndicator ***/
+    implementation 'com.ryanjeffreybrooks:indefinitepagerindicator:1.0.10'
+
+    /*** Firebase ***/
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.0'
+
+    /*** Location ***/
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+
+    /*** Paging ***/
+    //implementation 'android.arch.paging:runtime:1.0.1'
+    implementation 'androidx.paging:paging-runtime:3.0.0-alpha09'
+
+    /*** App Update ***/
+    implementation 'com.google.android.play:core:1.8.3'
+
+    /*** ViewPager Indicator ***/
+    implementation 'me.relex:circleindicator:2.1.4'
+
+    /*** Auto read otp ***/
+    implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.0'
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
+}
