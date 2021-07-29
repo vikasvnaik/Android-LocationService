@@ -29,8 +29,8 @@ ext {
     /** Change once per release cycle **/
     versionMajor = 1 // increase in case of very significant features/design/concept is introduced
     versionMinor = 0 // increase in case of new features/screens introduced
-    versionPatch =  // increase in case of  bug fixes and very minor changes
-            versionCode = 1 // increase in case of all above scenarios(i.e. next version changes)
+    versionPatch = 0 // increase in case of  bug fixes and very minor change
+    versionCode = 1 // increase in case of all above scenarios(i.e. next version changes)
     buildNum = 1 // increase in case of improvised QA drop for same set of changes
 
     /** Change once per QA cycle **/

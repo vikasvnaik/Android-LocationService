@@ -25,19 +25,18 @@ android {
 
         stage {
             dimension = 'env'
-            applicationId "com.mvvm.supplierapp.dev"
+            applicationId "com.mvvm.dev"
             buildConfigField "String", "BASE_URL", "\"http://api.weatherstack.com/\""
-            //buildConfigField "String", "BASE_URL", "\"https://test-operator.ipllogisticstechnologies.com\""
         }
         preprod {
             dimension = 'env'
-            applicationId "com.mvvm.supplierapp.qa"
+            applicationId "com.mvvm.qa"
             buildConfigField "String", "BASE_URL", "\"http://api.weatherstack.com/\""
         }
         prod {
             dimension = 'env'
-            applicationId "com.mvvm.supplierapp"
-            buildConfigField "String", "BASE_URL", "\"https://operator.ipllogisticstechnologies.com\""
+            applicationId "com.mvvm.prod"
+            buildConfigField "String", "BASE_URL", "\"http://api.weatherstack.com/\""
         }
     }
 }
