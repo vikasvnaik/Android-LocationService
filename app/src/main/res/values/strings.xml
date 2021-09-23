@@ -3,4 +3,10 @@
     <string name="label_ok">Ok</string>
     <string name="error_message">Something went wrong at our end!</string>
     <string name="retry">Retry</string>
+    <string name="settings_status_on_summary">Service running</string>
+    <string name="tracking">Tracking ✓</string>
+
+    <string name="battery_title"> Battery Optimization</string>
+    <string name="battery_content">Disable battery optimization for this app to track location.</string>
+    <string name="battery_ok">OK</string>
 </resources>
