@@ -60,7 +60,7 @@ dependencies {
     //implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.0.3'
 
     /*** Permissions ***/
-    //implementation 'com.github.quickpermissions:quickpermissions-kotlin:0.4.0'
+    implementation 'com.github.quickpermissions:quickpermissions-kotlin:0.4.0'
 
     /*** Logging ***/
     implementation 'com.jakewharton.timber:timber:4.7.1'
