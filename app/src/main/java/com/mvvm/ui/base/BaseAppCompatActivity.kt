@@ -66,9 +66,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.root.hideKeyboard()
         observeLiveData()
-        singleLiveData.observe(this, EventUnWrapObserver {
+        /*singleLiveData.observe(this, EventUnWrapObserver {
             Timber.d("EventUnWrapObserver")
-        })
+        })*/
 
         retrofitManager.tokenExpire.consumeAsFlow().collectEvent {
             mainScope.launch {

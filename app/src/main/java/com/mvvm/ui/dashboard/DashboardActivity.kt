@@ -34,10 +34,6 @@ class DashboardActivity : BaseAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //callLocationPermission(allow = {checkGpsEnabled()})
-
-
-
         setupLocation()
     }
 
@@ -49,8 +45,10 @@ class DashboardActivity : BaseAppCompatActivity() {
 
     private fun setupLocation() {
         if (isServiceRunning(LocationService::class.java)) {
+            startLocationService()
             setTrackingStatus(R.string.tracking)
         } else {
+            startLocationService()
             callLocationPermission(allow = { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 callBackgroundLocationPermission(allow = {checkGpsEnabled()})
             }  })

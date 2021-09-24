@@ -15,7 +15,7 @@
             android:id="@+id/loadingLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="gone">
             <ImageView
                 android:id="@+id/loading"
                 android:layout_width="96dp"
@@ -95,6 +95,10 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/cityText"/>
         </RelativeLayout>
+        <FrameLayout
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
     <!-- Adding bottom sheet after main content -->
    <!-- <include layout="@layout/bottom_sheet" />-->
