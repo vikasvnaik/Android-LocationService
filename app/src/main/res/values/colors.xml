@@ -25,5 +25,8 @@
     <color name="background">#F5F6F7</color>
     <color name="tempText">#FF2A2A2A</color>
     <color name="cityText">#FF556799</color>
+    <color name="colorLightBackground">#D3D3D3</color>
+    <color name="colortint1">#29314b</color>
+    <color name="colortint2">#29314b</color>
 
 </resources>

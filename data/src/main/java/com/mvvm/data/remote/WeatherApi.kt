@@ -6,7 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.http.*
 
 interface WeatherApi {
-    @POST("/current?access_key=apikey")
+    @POST("/current?access_key=5fb6d97c4f83b4dd493a9b6712c16704")
     suspend fun weatherUpdate(@Query("query") location: String): Response<WeatherUpdate>
 
     companion object {

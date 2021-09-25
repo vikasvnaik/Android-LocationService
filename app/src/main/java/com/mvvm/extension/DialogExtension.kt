@@ -1,6 +1,6 @@
 @file:JvmName("DialogUtils")
 
-package com.transo.ken42.driver.extension
+package com.mvvm.extension
 
 import android.app.DatePickerDialog
 import android.app.Dialog

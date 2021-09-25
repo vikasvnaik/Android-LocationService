@@ -28,4 +28,16 @@ class UserPrefDataManager(private val userDataRepo: UserDataRepo) : UserDataRepo
         set(value) {
             userDataRepo.token = value
         }
+
+    override var distance: Float
+        get() = userDataRepo.distance
+        set(value) {
+            userDataRepo.distance = value
+        }
+
+    override var status: Boolean
+        get() = userDataRepo.status
+        set(value) {
+            userDataRepo.status = value
+        }
 }

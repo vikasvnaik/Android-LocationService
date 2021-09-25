@@ -18,27 +18,36 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.mvvm.data.db.AppDatabase
+import com.mvvm.data.db.DatabaseClient
+import com.mvvm.data.db.dao.LocationDao
+import com.mvvm.data.db.entity.LocationEntity
 import com.mvvm.domain.entity.request.WeatherRequest
 import com.mvvm.notifications.NotificationHelper
 import com.mvvm.ui.Notification
 import com.mvvm.domain.entity.wrapped.Event
+import com.mvvm.domain.manager.UserPrefDataManager
+import com.mvvm.ui.Locations
 import org.koin.android.ext.android.inject
 import java.util.HashMap
 
 class LocationService : Service() {
     private val singleLiveData by inject<MutableLiveData<Event<Bundle>>>()
-    companion object {
+    val userDataManager by inject<UserPrefDataManager>()
+    private var mFusedLocationClient: FusedLocationProviderClient? = null
+    private var mNotificationBuilder: NotificationCompat.Builder? = null
 
+    companion object {
         //region data
         private val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 10000
-        private var mFusedLocationClient: FusedLocationProviderClient? = null
+
         private var locationRequest: LocationRequest? = null
         private val locationSettingsRequest: LocationSettingsRequest? = null
 
         private val CHANNEL_ID = "My Foreground Service"
         private val CHANNEL_NAME: String = Notification.TRACKING_SERVICE_NOTIFICATION
         private var notificationHelper: NotificationHelper? = null
-        private var mNotificationBuilder: NotificationCompat.Builder? = null
+
         private const val FOREGROUND_SERVICE_ID = 1
     }
 
@@ -52,6 +61,7 @@ class LocationService : Service() {
     //onCreate
     override fun onCreate() {
         super.onCreate()
+        setUpRoomDb()
         setupFirebase()
         initData()
     }
@@ -81,23 +91,68 @@ class LocationService : Service() {
         override fun onLocationResult(locationResult: LocationResult) {
             super.onLocationResult(locationResult)
             val currentLocation: Location = locationResult.lastLocation
-            Timber.d("Response : ${currentLocation.latitude} ${currentLocation.longitude}")
-            bundle.putDouble("lat", currentLocation.latitude)
-            bundle.putDouble("lng", currentLocation.longitude)
-            val locationData: MutableMap<String, Any?> = HashMap()
-            locationData["latitude"] = currentLocation.latitude
-            locationData["longitude"] = currentLocation.longitude
+            if(isValidLocation(currentLocation)) {
+                if(prevLocation != null) {
+                    userDataManager.distance = userDataManager.distance + prevLocation!!.distanceTo(currentLocation)
+                }
+                Timber.d("Response : ${currentLocation.latitude} ${currentLocation.longitude}")
+                bundle.putDouble("lat", currentLocation.latitude)
+                bundle.putDouble("lng", currentLocation.longitude)
+                bundle.putFloat("speed", currentLocation.speed)
+                val locationData: MutableMap<String, Any?> = HashMap()
+                locationData["latitude"] = currentLocation.latitude
+                locationData["longitude"] = currentLocation.longitude
+                locationData["time"] = currentLocation.time
 
-            pushToFirebase(locationData)
-            singleLiveData.postValue(Event(bundle))
+                pushToFirebase(locationData)
+                singleLiveData.postValue(Event(bundle))
+
+                /*if(CommonUtils.hasInternetConnected(applicationContext)){
+                    GlobalScope.launch(Dispatchers.IO) {
+                        locationDao?.insert(
+                            LocationEntity(
+                                null,
+                                currentLocation.time.toString(),
+                                currentLocation.latitude,
+                                currentLocation.longitude,
+                                currentLocation.accuracy,
+                                currentLocation.speed
+                            )
+                        )
+                    }
+                }*/
+                prevLocation = currentLocation
+            } else {
+                Timber.d("Response : Invalid location")
+            }
+        }
+    }
+    var prevLocation: Location? = null
+    private fun isValidLocation(location: Location): Boolean {
+        return if (location.accuracy <= Locations.LOCATION_ACCURACY) {
+            if (prevLocation != null) {
+                var locationAccuracy = prevLocation!!.accuracy + location.accuracy
+                locationAccuracy < prevLocation!!.distanceTo(location)
+            } else {
+                true
+            }
+        } else {
+            false
         }
     }
 
+    //private lateinit var db: AppDatabase
+    private var locationDao: LocationDao? = null
+    private fun setUpRoomDb(){
+        locationDao = DatabaseClient.getDatabase(applicationContext).locationDao()
+       //locationDao = db.locationDao()
+    }
 
     private var mFirebaseTransportRef: DatabaseReference? = null
     private var locationRef: DatabaseReference? = null
     private fun setupFirebase(){
         val firebaseDataBase = FirebaseDatabase.getInstance()
+        //firebaseDataBase.setPersistenceEnabled(true)
         val path = "locationData/currentLocation"
         mFirebaseTransportRef = firebaseDataBase.reference
         locationRef = mFirebaseTransportRef!!.child("location")
@@ -125,6 +180,15 @@ class LocationService : Service() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        Timber.d("Location service stopped")
+        if (mFusedLocationClient != null) {
+            mFusedLocationClient!!.removeLocationUpdates(
+                locationCallback)
+        }
+        //stopSelf()
+    }
     override fun onBind(intent: Intent?): IBinder? {
         TODO("Not yet implemented")
     }

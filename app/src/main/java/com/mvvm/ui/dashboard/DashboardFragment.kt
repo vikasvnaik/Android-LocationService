@@ -10,7 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import coil.api.load
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,8 +24,11 @@ import com.mvvm.databinding.FragmentDashboardBinding
 import com.mvvm.domain.entity.wrapped.Event
 import com.mvvm.extension.*
 import com.mvvm.interfaces.UpdateLatLng
+import com.mvvm.listeners.ConnectionListenerLiveData
 import com.mvvm.ui.base.BaseFragment
+import com.mvvm.utils.CommonUtils
 import com.mvvm.utils.MarkerAnimation
+import com.mvvm.utils.SphericalUtils
 import com.mvvm.vm.OnWeatherUpdateEvent
 import com.mvvm.vm.dashboard.DashboardVM
 import org.koin.android.ext.android.inject
@@ -41,32 +46,46 @@ GoogleMap.OnMapLoadedCallback {
     private var mMap: GoogleMap? = null
     private var mapFragment: SupportMapFragment? = null
     private var marker: BitmapDescriptor? = null
+    private var prevLatLng: LatLng? = null
+    private var prevLatLngAnim: LatLng? = null
 
     override fun onCreate(view: View) {
-        /*rotate = RotateAnimation(
-            0F,
-            180F,
-            Animation.RELATIVE_TO_SELF,
-            0.5f,
-            Animation.RELATIVE_TO_SELF,
-            0.5f
-        )
-
-        binding.loadingLayout.setVisibility(View.VISIBLE)
-        binding.errorLayout.setVisibility(View.GONE)
-        rotate?.setDuration(5000)
-        rotate?.setInterpolator(LinearInterpolator())
-        rotate?.setFillAfter(true)
-        rotate?.setRepeatCount(Animation.INFINITE)
-
-        binding.loading.startAnimation(rotate)*/
+        val connectionLiveData = ConnectionListenerLiveData(activityCompat)
+        connectionLiveData.observe(this, Observer { isConnected ->
+            isConnected?.let {
+                if(it){
+                    binding.status.snackBar(AppString.your_online)
+                } else {
+                    binding.status.snackBar(AppString.your_offline)
+                }
+            }
+        })
 
         singleLiveData.observe(this, EventUnWrapObserver {
             Timber.d("Event :" + it.getDouble("lat") + it.getDouble("lng"))
             //addMarker(it.getDouble("lat"), it.getDouble("lng"),"test","test 1",marker)
-            markerAnimation(LatLng(it.getDouble("lat"), it.getDouble("lng")),14f)
+            if(prevLatLng == null){
+                prevLatLng = LatLng(it.getDouble("lat"), it.getDouble("lng"))
+                prevLatLngAnim = LatLng(it.getDouble("lat"), it.getDouble("lng"))
+            }
+            speedoMeter(it.getFloat("speed"))
+            markerAnimation(LatLng(it.getDouble("lat"), it.getDouble("lng")),17f)
+
+
+            val mDistanceInMeter: Double =
+                SphericalUtils.computeDistanceBetween(
+                    prevLatLng, LatLng(it.getDouble("lat"), it.getDouble("lng")))
+            binding.distance.text = "${getString(AppString.distance)} : " + String.format("%.2f", userDataManager.distance/1000) +" Km"
+            if(mDistanceInMeter > 1000) {
+                prevLatLng = LatLng(it.getDouble("lat"), it.getDouble("lng"))
+                /*dashboardVM.post(
+                    OnWeatherUpdateEvent.UpdateWeather(
+                        it.getDouble("lat").toString() + "," + it.getDouble("lng").toString()
+                    )
+                )*/
+            }
         })
-        dashboardVM.post(OnWeatherUpdateEvent.UpdateWeather("13.036621404445428,77.69561364659172"))
+
     }
 
     override fun onCreateView(
@@ -82,6 +101,29 @@ GoogleMap.OnMapLoadedCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         marker = getBitmapDescriptor(R.drawable.truck_top_view, requireActivity())
+        if(userDataManager.status){
+            binding.status.isChecked = true
+            binding.status.text = getString(AppString.on_duty)
+        } else {
+            binding.status.isChecked = false
+            binding.status.text = getString(AppString.off_duty)
+        }
+        binding.status
+        binding.status.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                userDataManager.distance = 0.0F
+                binding.status.text = getString(AppString.on_duty)
+                userDataManager.status = true
+                CommonUtils.startLocationService(activityCompat)
+                CommonUtils.startWorker(activityCompat)
+            } else {
+                userDataManager.distance = 0.0F
+                binding.status.text = getString(AppString.off_duty)
+                userDataManager.status = false
+                CommonUtils.stopLocationService(activityCompat)
+                CommonUtils.stopWorker(activityCompat)
+            }
+        }
         initMapFragment()
     }
 
@@ -105,11 +147,7 @@ GoogleMap.OnMapLoadedCallback {
             binding.temperature.text = it.current.temperature.toString()
             binding.icon.load(it.current.weather_icons[0])
 
-            rotate!!.cancel()
-
-
-            binding.loadingLayout.setVisibility(View.GONE)
-            binding.currentWeather.setVisibility(View.VISIBLE)
+            binding.currentWeather.visibility = View.VISIBLE
         })
     }
 
@@ -137,13 +175,18 @@ GoogleMap.OnMapLoadedCallback {
                     MarkerAnimation(mMap, 1000, object : UpdateLatLng {
                         override fun onUpdatedLatLng(updatedLatLng: LatLng?) {}
                     }).animateMarker(currentLocation, playMarker)
-                    //speedoMeter(speed)
+                    val mDistanceInMeter: Double =
+                        SphericalUtils.computeDistanceBetween(
+                            prevLatLngAnim, currentLocation)
+                    if(mDistanceInMeter > 100) {
+                        prevLatLngAnim = currentLocation
                         mMap!!.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                 currentLocation,
                                 mMap!!.cameraPosition.zoom
                             )
                         )
+                    }
 
                 }
             } else {
@@ -199,5 +242,34 @@ GoogleMap.OnMapLoadedCallback {
             return null
         }
         return null
+    }
+
+    private fun speedoMeter(speed: Float ) {
+        /**
+         * Speed meter implementation on the dashboard
+         * */
+        /**
+         * Speed meter implementation on the dashboard
+         */
+        binding.speedoMeter.setText(String.format("%.2f", speed))
+        binding.speedoMeter.setValueAnimated(Math.round(speed).toFloat())
+        /**
+         * Handling speed meter color on speed limit
+         */
+        try {
+            //if (getActivity() != null) {
+            if (speed >= 60) binding.speedoMeter.setBarColor(
+                ContextCompat.getColor(
+                    activityCompat,
+                    R.color.colorRed
+                )
+            ) else binding.speedoMeter.setBarColor(
+                ContextCompat.getColor(activityCompat, R.color.colorGreen)
+            )
+            //}
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+            //CrashReporter.logException(e);
+        }
     }
 }

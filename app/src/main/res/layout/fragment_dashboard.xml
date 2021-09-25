@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,54 +12,28 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
-            android:id="@+id/loadingLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-            <ImageView
-                android:id="@+id/loading"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:interpolator="@anim/rotate"
-                android:layout_centerInParent="true"
-                android:background="@drawable/ic_loading"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/errorLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#E85959"
-            android:visibility="gone">
-            <TextView
-                android:id="@+id/error"
-                style="@style/Widget.TextView.Medium.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/error_message"
-                android:layout_centerInParent="true"
-                android:textColor="@color/colorWhite"
-                android:layout_margin="48dp"
-                android:fontFamily="sans-serif-thin"
-                />
-            <Button
-                android:id="@+id/retry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/error"
-                android:layout_marginTop="44dp"
-                android:textColor="@color/colorWhite"
-                android:text="@string/retry"
-                android:textAllCaps="true"
-                android:background="#4A4A4A"
-                android:layout_centerHorizontal="true"/>
-
-        </RelativeLayout>
+        <Switch
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="On Duty"
+            android:textOff="Off Duty"
+            android:text="@string/off_duty"
+            android:layout_margin="@dimen/margin_medium"/>
+        <TextView
+            android:id="@+id/distance"
+            style="@style/Widget.TextView.Medium.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/status"
+            android:layout_margin="@dimen/margin_medium"
+            android:fontFamily="sans-serif-black"
+            android:textColor="@color/tempText" />
         <RelativeLayout
             android:id="@+id/currentWeather"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <Button
                 android:id="@+id/refresh"
@@ -74,7 +49,6 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="56dp"
                 android:layout_marginLeft="26dp"
-                android:background="@mipmap/ic_launcher"
                 android:layout_toRightOf="@+id/city"/>
             <TextView
                 android:id="@+id/temperature"
@@ -95,10 +69,60 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/cityText"/>
         </RelativeLayout>
+
         <FrameLayout
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@+id/currentWeather"/>
+        <RelativeLayout
+            android:id="@+id/speedrl"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center"
+            android:layout_margin="16dp">
+
+            <at.grabner.circleprogress.CircleProgressView
+                android:id="@+id/speedoMeter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                CircleProgressView:cpv_barColor="@color/colorLightBackground"
+                CircleProgressView:cpv_barWidth="7dp"
+                CircleProgressView:cpv_fillColor="@android:color/white"
+                CircleProgressView:cpv_innerContourColor="@android:color/white"
+                CircleProgressView:cpv_innerContourSize="0dp"
+                CircleProgressView:cpv_maxValue="100"
+                CircleProgressView:cpv_outerContourColor="@color/colorLightBackground"
+                CircleProgressView:cpv_outerContourSize="0dp"
+                CircleProgressView:cpv_rimColor="#fdb813"
+                CircleProgressView:cpv_rimWidth="7dp"
+                CircleProgressView:cpv_seekMode="false"
+                CircleProgressView:cpv_showUnit="true"
+                CircleProgressView:cpv_startAngle="90"
+                CircleProgressView:cpv_textColor="#207ace"
+                CircleProgressView:cpv_textScale="1"
+                CircleProgressView:cpv_textSize="16dp"
+                CircleProgressView:cpv_unit="Km/hr"
+                CircleProgressView:cpv_unitColor="#515151"
+                CircleProgressView:cpv_unitPosition="bottom"
+                CircleProgressView:cpv_unitScale="1"
+                CircleProgressView:cpv_unitSize="8dp"
+                CircleProgressView:cpv_value="0" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="16dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_vector_meter"
+                app:tint="#4b4b4b" />
+        </RelativeLayout>
     </RelativeLayout>
     <!-- Adding bottom sheet after main content -->
    <!-- <include layout="@layout/bottom_sheet" />-->
