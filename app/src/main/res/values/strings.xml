@@ -1,6 +1,21 @@
 <resources>
-    <string name="app_name">Mvvm</string>
+    <string name="app_name">Tracker</string>
     <string name="label_ok">Ok</string>
     <string name="error_message">Something went wrong at our end!</string>
     <string name="retry">Retry</string>
+    <string name="settings_status_on_summary">Service running</string>
+    <string name="tracking">Tracking ✓</string>
+
+    <string name="battery_title"> Battery Optimization</string>
+    <string name="battery_content">Disable battery optimization for this app to track location.</string>
+    <string name="battery_ok">OK</string>
+    <string name="on_duty">On Duty</string>
+    <string name="off_duty">Off Duty</string>
+    <string name="your_offline">Your Offline</string>
+    <string name="your_online">Your Online</string>
+    <string name="enable_gps">Enable GPS</string>
+    <string name="distance">Distance</string>
+    <string name="screen1">Screen1</string>
+    <string name="screen2">Screen2</string>
+    <string name="auto_start">Enable Auto start</string>
 </resources>

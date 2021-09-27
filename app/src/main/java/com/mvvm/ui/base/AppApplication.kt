@@ -12,12 +12,11 @@ class AppApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
-            //FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
             Timber.plant(LineNumberDebugTree())
         } else {
-            //FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
         }
-        //Places.initialize(this, "AIzaSyBL1KrGqEhVhhv6WejsXZfC-OK4YRWT-oo")
     }
 }
 

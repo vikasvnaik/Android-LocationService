@@ -17,8 +17,8 @@ import com.mvvm.domain.extention.collectEvent
 import com.mvvm.domain.extention.mainScope
 import com.mvvm.domain.manager.UserPrefDataManager
 import com.mvvm.extension.AppString
-import com.mvvm.extension.EventUnWrapObserver
-import com.mvvm.ui.base.snackBar
+import com.mvvm.extension.alert
+import com.mvvm.extension.snackBar
 import com.transo.ken42.driver.extension.*
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
@@ -66,9 +66,9 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.root.hideKeyboard()
         observeLiveData()
-        singleLiveData.observe(this, EventUnWrapObserver {
+        /*singleLiveData.observe(this, EventUnWrapObserver {
             Timber.d("EventUnWrapObserver")
-        })
+        })*/
 
         retrofitManager.tokenExpire.consumeAsFlow().collectEvent {
             mainScope.launch {
@@ -146,7 +146,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
 
 fun AppCompatActivity.showLoader() {
     castAs<BaseAppCompatActivity> {
-        showLoader()
+        //showLoader()
     }
 }
 

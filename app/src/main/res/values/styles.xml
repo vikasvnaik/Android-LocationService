@@ -201,4 +201,9 @@
         <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
     </style>
 
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Button</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Button</item>
+    </style>
+
 </resources>

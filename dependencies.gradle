@@ -60,7 +60,7 @@ dependencies {
     //implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.0.3'
 
     /*** Permissions ***/
-    //implementation 'com.github.quickpermissions:quickpermissions-kotlin:0.4.0'
+    implementation 'com.github.quickpermissions:quickpermissions-kotlin:0.4.0'
 
     /*** Logging ***/
     implementation 'com.jakewharton.timber:timber:4.7.1'
@@ -72,10 +72,14 @@ dependencies {
     implementation 'com.ryanjeffreybrooks:indefinitepagerindicator:1.0.10'
 
     /*** Firebase ***/
-    implementation 'com.google.firebase:firebase-messaging:22.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.0'
-    implementation 'com.google.firebase:firebase-analytics-ktx:19.0.0'
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:28.4.1')
 
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-auth'
     /*** Location ***/
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
@@ -92,4 +96,20 @@ dependencies {
     /*** Auto read otp ***/
     implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.1'
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
+
+    /*Google maps Animation*/
+   // implementation 'com.github.TecOrb-Developers:HRMarkerAnimation:fe6f64e75b'
+
+    //work manager
+    implementation "androidx.work:work-runtime-ktx:2.6.0"
+
+    /*room*/
+    implementation "androidx.room:room-runtime:2.3.0"
+    implementation "androidx.room:room-ktx:2.3.0"
+    kapt "androidx.room:room-compiler:2.3.0"
+
+    /*Progressbar*/
+    implementation 'com.github.jakob-grabner:Circle-Progress-View:v1.3'
+
+
 }

@@ -25,7 +25,7 @@ android {
 
         stage {
             dimension = 'env'
-            applicationId "com.mvvm.dev"
+            applicationId "com.mvvm.tracker"
             buildConfigField "String", "BASE_URL", "\"http://api.weatherstack.com/\""
         }
         preprod {

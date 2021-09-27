@@ -13,9 +13,12 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.mvvm.BuildConfig
 import com.mvvm.data.remote.WeatherApi
 import com.mvvm.data.remote.RetrofitManager
+import com.mvvm.data.repository.UserDataRepoImpl
 import com.mvvm.data.repository.WeatherRepoImpl
 import com.mvvm.domain.entity.wrapped.Event
+import com.mvvm.domain.manager.UserPrefDataManager
 import com.mvvm.domain.manager.WeatherUpdateManager
+import com.mvvm.domain.repository.UserDataRepo
 import com.mvvm.domain.repository.WeatherRepo
 import com.mvvm.domain.usecase.WeatherUpdateUseCase
 import com.mvvm.extension.P
@@ -36,9 +39,11 @@ val useCases = module {
     factory { WeatherUpdateUseCase(get()) }
 }
 val manager = module {
+    single { UserPrefDataManager(get()) }
     single { WeatherUpdateManager(get()) }
 }
 val repository = module {
+    single { UserDataRepoImpl(get(), get()) as UserDataRepo }
     single { WeatherRepoImpl(get()) as WeatherRepo }
 }
 val service = module {
