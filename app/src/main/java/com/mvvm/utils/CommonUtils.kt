@@ -90,34 +90,5 @@ class CommonUtils {
         fun stopWorker(context: Context) {
             WorkManager.getInstance(context).cancelAllWorkByTag("locationWorkManager")
         }
-
-        //Constants.REACHABILITY_SERVER = "https://www.google.com"
-        fun hasInternetConnected(context: Context): Boolean {
-            if (hasNetworkAvailable(context)) {
-                try {
-                    val connection = URL("https://www.google.com").openConnection() as HttpURLConnection
-                    connection.setRequestProperty("User-Agent", "ConnectionTest")
-                    connection.setRequestProperty("Connection", "close")
-                    connection.connectTimeout = 1000 // configurable
-                    connection.connect()
-                    Timber.d("hasInternetConnected: ${(connection.responseCode == 200)}")
-                    return (connection.responseCode == 200)
-                } catch (e: IOException) {
-                    Timber.e("Error checking internet connection : $e")
-                }
-            } else {
-                Timber.w( "No network available!")
-            }
-            Timber.d( "hasInternetConnected: false")
-            return false
-        }
-
-        private fun hasNetworkAvailable(context: Context): Boolean {
-            val service = Context.CONNECTIVITY_SERVICE
-            val manager = context.getSystemService(service) as ConnectivityManager?
-            val network = manager?.activeNetworkInfo
-            Timber.d("hasNetworkAvailable: ${(network != null)}")
-            return (network != null)
-        }
     }
 }

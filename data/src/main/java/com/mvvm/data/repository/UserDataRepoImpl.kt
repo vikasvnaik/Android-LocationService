@@ -56,4 +56,20 @@ class UserDataRepoImpl(private val sharedPreferences: SharedPreferences, private
             sharedPreferences["status"] = value
         }
 
+    override var fireBaseToken: String
+        get() {
+            return sharedPreferences["fireBaseToken", ""]
+        }
+        set(value) {
+            sharedPreferences["fireBaseToken"] = value
+        }
+
+
+    override var appAutoStart: Boolean
+        get() {
+            return sharedPreferences["appAutoStart", false]
+        }
+        set(value) {
+            sharedPreferences["appAutoStart"] = value
+        }
 }

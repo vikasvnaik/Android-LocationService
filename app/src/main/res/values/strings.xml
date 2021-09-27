@@ -15,4 +15,7 @@
     <string name="your_online">Your Online</string>
     <string name="enable_gps">Enable GPS</string>
     <string name="distance">Distance</string>
+    <string name="screen1">Screen1</string>
+    <string name="screen2">Screen2</string>
+    <string name="auto_start">Enable Auto start</string>
 </resources>

@@ -13,7 +13,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" /> <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
-
     <uses-feature android:name="android.hardware.location.gps" />
 
     <application
@@ -25,11 +24,19 @@
         android:supportsRtl="true"
         android:theme="@style/MyTheme"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.notification_screens.Screen2Activity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.notification_screens.NotificationTestActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.notification_screens.Screen1Activity"
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBjE1eaTyn8ELbunCIvrvGg22gHI-JktG0" />
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -37,7 +44,15 @@
         <service
             android:name=".service.LocationService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
+
+        <service
+            android:name=".service.firebase.FirebaseService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name="androidx.startup.InitializationProvider"
@@ -56,7 +71,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.dashboard.DashboardActivity"></activity>
+        <activity android:name=".ui.dashboard.DashboardActivity" />
+        <activity
+            android:name=".ui.notifications.PushHandleActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="screen1" />
+                <action android:name="screen2" />
+                <action android:name="general" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

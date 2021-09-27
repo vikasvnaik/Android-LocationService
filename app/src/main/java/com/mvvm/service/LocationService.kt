@@ -1,7 +1,6 @@
 package com.mvvm.service
 
 import android.Manifest
-import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
@@ -11,27 +10,29 @@ import android.os.IBinder
 import com.google.android.gms.location.*
 import timber.log.Timber
 import android.os.Looper
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.Observer
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.mvvm.data.db.AppDatabase
 import com.mvvm.data.db.DatabaseClient
 import com.mvvm.data.db.dao.LocationDao
 import com.mvvm.data.db.entity.LocationEntity
-import com.mvvm.domain.entity.request.WeatherRequest
 import com.mvvm.notifications.NotificationHelper
 import com.mvvm.ui.Notification
 import com.mvvm.domain.entity.wrapped.Event
 import com.mvvm.domain.manager.UserPrefDataManager
+import com.mvvm.listeners.ConnectionListenerLiveData
 import com.mvvm.ui.Locations
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.util.HashMap
 
-class LocationService : Service() {
+class LocationService : LifecycleService() {
     private val singleLiveData by inject<MutableLiveData<Event<Bundle>>>()
     val userDataManager by inject<UserPrefDataManager>()
     private var mFusedLocationClient: FusedLocationProviderClient? = null
@@ -52,7 +53,7 @@ class LocationService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
+        super.onStartCommand(intent, flags, startId)
         buildNotification()
         startLocationUpdates()
         return START_STICKY
@@ -64,6 +65,7 @@ class LocationService : Service() {
         setUpRoomDb()
         setupFirebase()
         initData()
+        networkStatus()
     }
 
     private fun initData() {
@@ -107,7 +109,7 @@ class LocationService : Service() {
                 pushToFirebase(locationData)
                 singleLiveData.postValue(Event(bundle))
 
-                /*if(CommonUtils.hasInternetConnected(applicationContext)){
+                if(!online){
                     GlobalScope.launch(Dispatchers.IO) {
                         locationDao?.insert(
                             LocationEntity(
@@ -120,7 +122,7 @@ class LocationService : Service() {
                             )
                         )
                     }
-                }*/
+                }
                 prevLocation = currentLocation
             } else {
                 Timber.d("Response : Invalid location")
@@ -189,8 +191,35 @@ class LocationService : Service() {
         }
         //stopSelf()
     }
-    override fun onBind(intent: Intent?): IBinder? {
-        TODO("Not yet implemented")
+
+    private var online: Boolean = false
+    private fun networkStatus(){
+        val connectionLiveData = ConnectionListenerLiveData(this)
+        connectionLiveData.observe(this, Observer { isConnected ->
+            isConnected?.let {
+                if(it){
+                    online = true
+                    // On network available Stored location data can be pushed
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val locations = locationDao?.getAll() //Read data
+                        if (locations != null) {
+                            if (locations.isNotEmpty()){
+                                //push data to server
+                                //delete data from db
+                                val n = locations.size
+                                locationDao?.deleteByCount(n) //delete last n rows n-> number of locations pushed to server
+                            }
+                        }
+                    }
+                } else {
+                    online = false
+                }
+            }
+        })
     }
 
+    override fun onBind(intent: Intent): IBinder? {
+        super.onBind(intent)
+        TODO("Not yet implemented")
+    }
 }

@@ -40,4 +40,16 @@ class UserPrefDataManager(private val userDataRepo: UserDataRepo) : UserDataRepo
         set(value) {
             userDataRepo.status = value
         }
+
+    override var fireBaseToken: String
+        get() = userDataRepo.fireBaseToken
+        set(value) {
+            userDataRepo.fireBaseToken = value
+        }
+
+    override var appAutoStart: Boolean
+        get() = userDataRepo.appAutoStart
+        set(value) {
+            userDataRepo.appAutoStart = value
+        }
 }

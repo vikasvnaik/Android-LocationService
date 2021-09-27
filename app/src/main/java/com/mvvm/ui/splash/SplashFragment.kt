@@ -32,20 +32,17 @@ class SplashFragment : BaseFragment(AppLayout.frag_splash) {
     private val binding get() = _binding!!
 
     override fun onCreate(view: View) {
-
-
-
-        /*FirebaseInstallations.getInstance().getToken(false).addOnCompleteListener {
+        FirebaseInstallations.getInstance().getToken(false).addOnCompleteListener {
             if (it.isSuccessful) {
-                //userDataManager.fireBaseToken = it.result.token
-                //Timber.d("Installation ID: %s", userDataManager.fireBaseToken)
+                userDataManager.fireBaseToken = it.result.token
+                Timber.d("Installation ID : %s", userDataManager.fireBaseToken)
             } else {
                 Timber.d("Unable to get Installation ID")
             }
         }
         FirebaseMessaging.getInstance().token.addOnCompleteListener {
             Timber.d("FirebaseMessaging Token ${it.result}")
-        }*/
+        }
 
         /*lifecycleScope.launch {
             flow {

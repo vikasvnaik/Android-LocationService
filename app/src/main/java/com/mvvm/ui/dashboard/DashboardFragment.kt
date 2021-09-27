@@ -26,6 +26,7 @@ import com.mvvm.extension.*
 import com.mvvm.interfaces.UpdateLatLng
 import com.mvvm.listeners.ConnectionListenerLiveData
 import com.mvvm.ui.base.BaseFragment
+import com.mvvm.utils.AutoStartHelper
 import com.mvvm.utils.CommonUtils
 import com.mvvm.utils.MarkerAnimation
 import com.mvvm.utils.SphericalUtils
@@ -48,9 +49,11 @@ GoogleMap.OnMapLoadedCallback {
     private var marker: BitmapDescriptor? = null
     private var prevLatLng: LatLng? = null
     private var prevLatLngAnim: LatLng? = null
+    private var weatherUpdated: Boolean = false
 
     override fun onCreate(view: View) {
         val connectionLiveData = ConnectionListenerLiveData(activityCompat)
+        weatherUpdated = false
         connectionLiveData.observe(this, Observer { isConnected ->
             isConnected?.let {
                 if(it){
@@ -76,13 +79,16 @@ GoogleMap.OnMapLoadedCallback {
                 SphericalUtils.computeDistanceBetween(
                     prevLatLng, LatLng(it.getDouble("lat"), it.getDouble("lng")))
             binding.distance.text = "${getString(AppString.distance)} : " + String.format("%.2f", userDataManager.distance/1000) +" Km"
-            if(mDistanceInMeter > 1000) {
+            Timber.d("Weather update 111_>>>>>>>>>>>>>>>>>  $weatherUpdated")
+            if(mDistanceInMeter > 10000 || !weatherUpdated) {
+                Timber.d("Weather update _>>>>>>>>>>>>>>>>>")
+                weatherUpdated = true
                 prevLatLng = LatLng(it.getDouble("lat"), it.getDouble("lng"))
-                /*dashboardVM.post(
+                dashboardVM.post(
                     OnWeatherUpdateEvent.UpdateWeather(
                         it.getDouble("lat").toString() + "," + it.getDouble("lng").toString()
                     )
-                )*/
+                )
             }
         })
 
@@ -123,6 +129,10 @@ GoogleMap.OnMapLoadedCallback {
                 CommonUtils.stopLocationService(activityCompat)
                 CommonUtils.stopWorker(activityCompat)
             }
+        }
+
+        binding.autoStart.setOnClickListener {
+            AutoStartHelper.instance.getAutoStartPermission(activityCompat)
         }
         initMapFragment()
     }

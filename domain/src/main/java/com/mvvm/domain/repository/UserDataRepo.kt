@@ -7,4 +7,6 @@ interface UserDataRepo {
     var isUserLoggedIn: Boolean
     var distance: Float
     var status: Boolean
+    var fireBaseToken: String
+    var appAutoStart: Boolean
 }
