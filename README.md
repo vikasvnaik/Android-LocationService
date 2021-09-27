@@ -36,6 +36,9 @@ MVVM, Kotlin, Koin(Dependency Injection)
           (MI,OPPO,VIVO,...)
         - Have added few path for few devices, as have not tested for all devices it might not work for few.
         Need to test and update the path.
+    - Notifications
+        - Have introduces notifications
+        - With data notifications we can send actions and with action we can redirect to required screens. 
           
 App can be tested with fake gps APP
     - Lockito - https://play.google.com/store/apps/details?id=fr.dvilleneuve.lockito&hl=en_IN&gl=US
